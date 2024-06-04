@@ -1,0 +1,64 @@
+{% extends "users/base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2 class="text-center">Book List</h2>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Book Name</th>
+                        <th scope="col">Author</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for book in page %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ book.title }}</td>
+                        <td>{{ book.author }}</td>
+                        <td>${{ book.price }}</td>
+                        <td>{{ book.quantity }}</td>
+                        <td>
+                            <a href="{% url 'details' book.id %}" class="btn btn-outline-info btn-sm mr-2">Details</a>
+                            <a href="{% url 'addtocart' book.id %}" class="btn btn-outline-warning btn-sm">Add to Cart</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<nav aria-label="Page navigation" class="mt-4">
+    <ul class="pagination justify-content-center">
+        {% if page.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page.previous_page_number }}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        {% endif %}
+        {% for num in page.paginator.page_range %}
+        <li class="page-item {% if page.number == num %}active{% endif %}">
+            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+        </li>
+        {% endfor %}
+        {% if page.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page.next_page_number }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endblock %}

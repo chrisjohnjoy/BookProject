@@ -1,0 +1,13 @@
+{% extends "users/base.html" %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <div class="jumbotron mt-4">
+        <h1 class="display-4">Thank You for Your Purchase!</h1>
+        <p class="lead">Your order was completed successfully.</p>
+        <hr class="my-4">
+        <p>We appreciate your business and hope you enjoy your books. You will receive a confirmation email shortly.</p>
+        <a class="btn btn-primary btn-lg" href="{% url 'listbook' %}" role="button">Go to Home</a>
+    </div>
+</div>
+{% endblock content %}

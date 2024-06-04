@@ -1,0 +1,60 @@
+{% extends "users/base.html" %}
+{% load static %}
+{% block content %}
+<div class="container">
+    {% if not cart_items %}
+    <p>Your cart is empty</p>
+    {% else %}
+    <h2 class="mb-4">Your Cart <span class="badge badge-secondary">{{ total_items }} items</span></h2>
+    <table class="table table-bordered">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Book Name</th>
+                <th scope="col">Author</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Total</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart_items %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ item.book.title }}</td>
+                <td>{{ item.book.author }}</td>
+                <td>${{ item.book.price }}</td>
+                <td>
+                    <div class="input-group">
+                        {% if item.quantity <= item.book.quantity %} <div class="input-group-prepend">
+                            <a class="btn btn-outline-secondary" href="{% url "decrease_quantity" item.id %}">-</a>
+                    </div>
+                    {% endif %}
+                    <input type="text" class="form-control text-center" value="{{ item.quantity }}" readonly>
+                    {% if item.quantity < item.book.quantity %} <div class="input-group-append">
+                        <a class="btn btn-outline-secondary" href="{% url "increase_quantity" item.id %}">+</a>
+</div>
+{% endif %}
+</div>
+</td>
+<td>{{ item_totals }}</td>
+<td><a href="{% url "remove_cart" item.id %}" class="btn btn-danger btn-sm">Remove</a></td>
+</tr>
+{% endfor %}
+</tbody>
+<tfoot>
+    <form action="{% url "create-checkout-session" %}" method="post">
+        {% csrf_token %}
+        <tr>
+
+            <td colspan="5" class="text-right font-weight-bold">Total:</td>
+            <td>${{ total_price }}</td>
+            <td><button id="checkout-button" type="submit" class="btn btn-success">Checkout</a></td>
+        </tr>
+    </form>
+</tfoot>
+</table>
+{% endif %}
+</div>
+{% endblock content %}
